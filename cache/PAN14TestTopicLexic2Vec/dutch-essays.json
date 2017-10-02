@@ -1,0 +1,14 @@
+{
+  "cache" : {},
+  "fin" : {
+        "min_freq" : 2,
+        "vec_dim" : 200,
+        "optm_subsampling" : 1.0E-4,
+        "optm_initAlpha" : 0.002,
+        "optm_window" : 12,
+        "optm_negSample" : 5,
+        "optm_parallelism" : 1,
+        "optm_iteration" : 36,
+        "optm_aphaUpdateInterval" : -1
+      }
+}
