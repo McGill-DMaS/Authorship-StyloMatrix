@@ -42,8 +42,8 @@ popd
 # Build the final jar with all dependencies:
 mvn package
 # The compiled jar file target/authorship-0.0.1-SNAPSHOT-jar-with-dependencies.jar contains all the dependencies. 
-# We suggest to append this jar file into your systems' 'CLASSPATH' environment variable:
-SET CLASSPATH=%CLASSPATH%:absolute_path_of_the_authorship-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+# We suggest to append this jar file into your systems' 'CLASSPATH' environment variable for this session:
+SET CLASSPATH=absolute_path_of_the_authorship-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ## Setting up the development project:
