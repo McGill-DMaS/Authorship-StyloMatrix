@@ -1,6 +1,8 @@
 StyloMatrix
 ===========
 
+![](https://user-images.githubusercontent.com/8474647/31106051-8479ff6a-a7b6-11e7-9c29-9e4f6428521b.jpg)
+
 Mining stylometric representation for authorship analysis. 
 This repository contains several multi-language NLP utilities for text proccessing and several models for authorship analysis. The [ca.mcgill.sis.dmas.nlp.model.astyle](https://github.com/McGill-DMaS/StyloMatrix/tree/master/src/main/java/ca/mcgill/sis/dmas/nlp/model/astyle) package contains the implementation of the following models:
 
