@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+	<!-- APPENDERS LIST -->
+	<!-- show log entries on console -->
+	<appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<layout class="ca.ncfta.pdns.mining.logging.ConsolePattern">
+			<param name="ConversionPattern" value="%d %-5p [%t] [%C{1}] - %m%n" />
+		</layout>
+	</appender>
+	<appender name="fileAppender" class="org.apache.log4j.FileAppender">
+		<param name="File" value="dnstree3.l5c.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%t] [%C{1}] - %m%n" />
+		</layout>
+	</appender>
+	<root>
+		<priority value="info"></priority>
+		<!-- log all log entries on console -->
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="fileAppender" />
+	</root>
+
+</log4j:configuration>

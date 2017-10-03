@@ -1,0 +1,7 @@
+maven install local jar command:
+
+install:install-file -Dfile=${basedir}/lib/GreekTagger-0.0.1.jar -DgroupId=local -DartifactId=greek-tagger -Dversion=0.0.1 -Dpackaging=jar
+
+install:install-file -Dfile=${basedir}/lib/hunspell.jar -DgroupId=local -DartifactId=hunspell -Dversion=0.0.1 -Dpackaging=jar
+
+install:install-file -Dfile=${basedir}/lib/auc.jar -DgroupId=local -DartifactId=auc -Dversion=0.0.1 -Dpackaging=jar
