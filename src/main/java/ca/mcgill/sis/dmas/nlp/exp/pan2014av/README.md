@@ -16,6 +16,7 @@ This package contains example runs for the PAN2014 authorship verification probl
 Make sure that the compiled jar is in your CLASSPATH environment variable. Download and unzip our bundled NLP parsing models from [here](https://github.com/McGill-DMaS/StyloMatrix/releases/download/0.0.1/nlps.7z)
 The following command processes the dataset:
 ```bash
+SET CLASSPATH=absolute_path_of_the_authorship-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 java ca.mcgill.sis.dmas.nlp.exp.pan2014av.PAN2014AV2 path_of_the_data_folder_of_your_choice path_of_the_unzipped_nlp_models
 ```
 You can find the processed dataset in \the_data_folder_of_your_choice\processed\. 
