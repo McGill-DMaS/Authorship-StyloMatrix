@@ -21,11 +21,6 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>ca.mcgill.sis.dmas.nlp.model.astyle._1_original.LearnerWordTest</mainClass>
-						</manifest>
-					</archive>
 				</configuration>
 				<executions>
 					<execution>
@@ -95,11 +90,6 @@
 			<version>3.0.3</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
-		</dependency>
-		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
@@ -108,11 +98,6 @@
 			<groupId>nz.ac.waikato.cms.weka</groupId>
 			<artifactId>weka-dev</artifactId>
 			<version>3.7.11</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.rholder</groupId>
-			<artifactId>snowball-stemmer</artifactId>
-			<version>1.3.0.581.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.opennlp</groupId>
@@ -183,11 +168,6 @@
 			<artifactId>jetty-webapp</artifactId>
 			<version>9.2.0.M0</version>
 		</dependency>
-		<dependency>
-			<groupId>net.sf.trove4j</groupId>
-			<artifactId>trove4j</artifactId>
-			<version>3.0.3</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -199,11 +179,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-			<version>3.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jblas</groupId>

@@ -1,6 +1,7 @@
 package ca.mcgill.sis.dmas.nlp.exp.icwsm2012;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -200,6 +201,50 @@ public class ICWSM2012 {
 			}
 
 		});
+	}
+
+	public static class TweetUtils {
+
+		Preprocessor preprocessor;
+		Tagger tagger;
+
+		public TweetUtils(String taggerModel) {
+			preprocessor = new Preprocessor(Preprocessor.F_ToLowerCase(), Preprocessor.F_RemoveEtraSpace(),
+					Preprocessor.F_ReplaceToken(StringResources.REGEX_URL, "URL"));
+			tagger = new Tagger();
+			try {
+				tagger.loadModel(taggerModel);
+			} catch (IOException e) {
+				logger.error("Failed to load twitter model.", e);
+			}
+		}
+
+		public Document processTweetsAsADoc(List<String> status, String doc_id) {
+			Document doc = new Document();
+			doc.id = doc_id;
+			status.stream()//
+					.filter(tw -> !tw.startsWith("RT:") && !tw.startsWith("rt:")).map(tw -> preprocessor.pass(tw))
+					.forEach(tw -> {
+						try {
+							List<TaggedToken> taggedTokens = tagger.tokenizeAndTag(tw);
+							List<String> wds = taggedTokens.stream().map(tt -> tt.token).collect(Collectors.toList());
+							List<String> tgs = taggedTokens.stream().map(tt -> tt.tag).collect(Collectors.toList());
+							Sentence wSentence = new Sentence();
+							wSentence.tokens = wds.toArray(new String[wds.size()]);
+							Sentence tSentence = new Sentence();
+							tSentence.tokens = tgs.toArray(new String[tgs.size()]);
+							if (wSentence.tokens.length > 0) {
+								doc.sentences.add(wSentence);
+								doc.sentences_tags.add(tSentence);
+							}
+						} catch (Exception e) {
+							logger.info("Error parsing tw {}; skipping. ", tw);
+						}
+					});
+
+			doc.rawContent = StringResources.JOINER_LINE.join(status);
+			return doc;
+		}
 	}
 
 	public static void fetch(String basePath) throws Exception {

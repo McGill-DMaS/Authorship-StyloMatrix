@@ -44,4 +44,7 @@ public class NodeWord implements Serializable {
 		return token;// + "::" + freq + "::" +
 						// StringResources.FORMAT_2R2D.format(samProb);
 	}
+
+	public NodeWord() {
+	}
 }

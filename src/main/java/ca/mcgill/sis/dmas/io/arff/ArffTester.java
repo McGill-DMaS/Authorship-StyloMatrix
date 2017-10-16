@@ -22,6 +22,7 @@ import weka.classifiers.functions.LinearRegression;
 import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.SimpleLogistic;
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Debug.Random;
@@ -109,7 +110,7 @@ public class ArffTester {
 	}
 
 	public Evaluation CV10(String file, boolean printDetail) throws Exception {
-		
+
 		Instances data = DataSource.read(file);
 		data.setClassIndex(data.numAttributes() - 1);
 
@@ -148,7 +149,7 @@ public class ArffTester {
 		}
 		return eval;
 	}
-	
+
 	public Double CVleaveOneOut(Instances data, boolean printDetail) throws Exception {
 
 		// randomize data
@@ -282,6 +283,15 @@ public class ArffTester {
 			logger.error("Failed to test arff file: " + trainingSets + " on " + testingSet, e);
 			return null;
 		}
+
+	}
+
+	public static double[] Test_Single(Classifier cls, double[] vec) throws Exception {
+		Instance in = new DenseInstance(vec.length);
+		for (int j = 0; j < vec.length; ++j) {
+			in.setValue(j, vec[j]);
+		}
+		return cls.distributionForInstance(in);
 
 	}
 

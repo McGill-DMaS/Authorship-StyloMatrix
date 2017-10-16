@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.netlib.util.booleanW;
+import org.netlib.util.doubleW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,21 +20,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
 
+import ca.mcgill.sis.dmas.io.arff.ArffTester;
 import ca.mcgill.sis.dmas.io.collection.EntryPair;
 import ca.mcgill.sis.dmas.io.collection.IteratorSafeGen;
 import ca.mcgill.sis.dmas.io.collection.Pool;
 import ca.mcgill.sis.dmas.nlp.corpus.Sentence;
 import ca.mcgill.sis.dmas.nlp.model.astyle.Document;
 import ca.mcgill.sis.dmas.nlp.model.astyle.GradientProgress;
+import ca.mcgill.sis.dmas.nlp.model.astyle.MathUtilities;
 import ca.mcgill.sis.dmas.nlp.model.astyle.NodeWord;
 import ca.mcgill.sis.dmas.nlp.model.astyle.RandL;
 import ca.mcgill.sis.dmas.nlp.model.astyle.WordEmbedding;
 import ca.mcgill.sis.dmas.nlp.model.astyle._1_lexical.LearnerTL2VecEmbedding.TL2VParam;
 import ca.mcgill.sis.dmas.nlp.model.astyle._1_lexical.LearnerTL2VecEmbedding.TLEmbedding;
+import weka.classifiers.Classifier;
+import weka.core.SerializationHelper;
 
 import static ca.mcgill.sis.dmas.nlp.model.astyle.MathUtilities.*;
 import static java.util.stream.Collectors.*;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static java.lang.Math.sqrt;
@@ -54,7 +62,7 @@ public class LearnerTL2VecEmbedding3 {
 	public volatile boolean earlystop = false;
 	public TL2VParam param;
 
-	public Consumer<Integer> iterationHood = null;
+	public transient Consumer<Integer> iterationHood = null;
 
 	volatile public int batchSize = 100;
 
@@ -325,6 +333,91 @@ public class LearnerTL2VecEmbedding3 {
 
 	public LearnerTL2VecEmbedding3(TL2VParam param) {
 		this.param = param;
+	}
+
+	public LearnerTL2VecEmbedding3() {
+	}
+
+	public static void saveWekaModel(String directory, Classifier cls_tplx_politic, Classifier cls_tp_politic,
+			Classifier cls_lx_politic, Classifier cls_tplx_age, Classifier cls_tp_age, Classifier cls_lx_age,
+			Classifier cls_tplx_gender, Classifier cls_tp_gender, Classifier cls_lx_gender) throws Exception {
+
+		if (!new File(directory).isDirectory())
+			new File(directory).mkdirs();
+
+		SerializationHelper.write(new File(directory + "/politic.tplx.cls.model").getAbsolutePath(), cls_tplx_politic);
+		SerializationHelper.write(new File(directory + "/politic.tp.cls.model").getAbsolutePath(), cls_tp_politic);
+		SerializationHelper.write(new File(directory + "/politic.lx.cls.model").getAbsolutePath(), cls_lx_politic);
+
+		SerializationHelper.write(new File(directory + "/age.tplx.cls.model").getAbsolutePath(), cls_tplx_age);
+		SerializationHelper.write(new File(directory + "/age.tp.cls.model").getAbsolutePath(), cls_tp_age);
+		SerializationHelper.write(new File(directory + "/age.lx.cls.model").getAbsolutePath(), cls_lx_age);
+
+		SerializationHelper.write(new File(directory + "/gender.tplx.cls.model").getAbsolutePath(), cls_tplx_gender);
+		SerializationHelper.write(new File(directory + "/gender.tp.cls.model").getAbsolutePath(), cls_tp_gender);
+		SerializationHelper.write(new File(directory + "/gender.lx.cls.model").getAbsolutePath(), cls_lx_gender);
+	}
+
+	public static Function<Document, HashMap<String, double[]>> loadWithWekaModel(String directory) throws Exception {
+		LearnerTL2VecEmbedding3 repModel = LearnerTL2VecEmbedding3.load(directory);
+
+		Classifier cls_tplx_politic = (Classifier) SerializationHelper
+				.read(new File(directory + "/politic.tplx.cls.model").getAbsolutePath());
+		Classifier cls_tp_politic = (Classifier) SerializationHelper
+				.read(new File(directory + "/politic.tp.cls.model").getAbsolutePath());
+		Classifier cls_lx_politic = (Classifier) SerializationHelper
+				.read(new File(directory + "/politic.lx.cls.model").getAbsolutePath());
+
+		Classifier cls_tplx_age = (Classifier) SerializationHelper
+				.read(new File(directory + "/age.tplx.cls.model").getAbsolutePath());
+		Classifier cls_tp_age = (Classifier) SerializationHelper
+				.read(new File(directory + "/age.tp.cls.model").getAbsolutePath());
+		Classifier cls_lx_age = (Classifier) SerializationHelper
+				.read(new File(directory + "/age.lx.cls.model").getAbsolutePath());
+
+		Classifier cls_tplx_gender = (Classifier) SerializationHelper
+				.read(new File(directory + "/gender.tplx.cls.model").getAbsolutePath());
+		Classifier cls_tp_gender = (Classifier) SerializationHelper
+				.read(new File(directory + "/gender.tp.cls.model").getAbsolutePath());
+		Classifier cls_lx_gender = (Classifier) SerializationHelper
+				.read(new File(directory + "/gender.lx.cls.model").getAbsolutePath());
+
+		Function<Document, HashMap<String, double[]>> test_func = doc -> {
+			TLEmbedding rep = repModel.inferUnnormalized(Arrays.asList(doc));
+			double[] rep_tplx = MathUtilities.merge(true, rep.lexicEmbedding, rep.topicEmbedding).get(doc.id);
+			double[] rep_lx = MathUtilities.normalize(rep.lexicEmbedding).get(doc.id);
+			double[] rep_tp = MathUtilities.normalize(rep.topicEmbedding).get(doc.id);
+			HashMap<String, double[]> dist_map = new HashMap<>();
+
+			try {
+
+				dist_map.put("politic-tplx", ArffTester.Test_Single(cls_tplx_politic, rep_tplx));
+				dist_map.put("politic-tp", ArffTester.Test_Single(cls_tp_politic, rep_tp));
+				dist_map.put("politic-lx", ArffTester.Test_Single(cls_lx_politic, rep_lx));
+
+				dist_map.put("age-tplx", ArffTester.Test_Single(cls_tplx_age, rep_tplx));
+				dist_map.put("age-tp", ArffTester.Test_Single(cls_tp_age, rep_tp));
+				dist_map.put("age-lx", ArffTester.Test_Single(cls_lx_age, rep_lx));
+
+				dist_map.put("gender-tplx", ArffTester.Test_Single(cls_tplx_gender, rep_tplx));
+				dist_map.put("gender-tp", ArffTester.Test_Single(cls_tp_gender, rep_tp));
+				dist_map.put("gender-lx", ArffTester.Test_Single(cls_lx_gender, rep_lx));
+
+			} catch (Exception e) {
+				logger.error("Failed to test a single instance. ", e);
+			}
+			return dist_map;
+		};
+
+		return test_func;
+	}
+
+	public void save(String path) throws Exception {
+		new ObjectMapper().writeValue(new File(path + "/rep.tplx.model"), this);
+	}
+
+	public static LearnerTL2VecEmbedding3 load(String path) throws Exception {
+		return new ObjectMapper().readValue(new File(path + "/rep.tplx.model"), LearnerTL2VecEmbedding3.class);
 	}
 
 }
