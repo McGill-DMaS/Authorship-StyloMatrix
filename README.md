@@ -22,7 +22,7 @@ Example runs are included in the [ca.mcgill.sis.dmas.nlp.exp](https://github.com
 
 StyloMatrix was developed by Steven H. H. Ding under the supervision of Benjamin C. M. Fung of the [Data Mining and Security Lab](http://dmas.lab.mcgill.ca/) at McGill University in Canada. If you find StyloMatrix useful, please cite our paper:
 
-* S. H. H. Ding, B. C. M. Fung, F. Iqbal, and W. K. Cheung. Learning stylometric representations for authorship analysis. IEEE Transactions on Cybernetics (CYB), in press. IEEE Systems, Man, and Cybernetics Society.
+* S. H. H. Ding, B. C. M. Fung, F. Iqbal, and W. K. Cheung. Learning stylometric representations for authorship analysis. <i>IEEE Transactions on Cybernetics (CYB)</i>, in press. IEEE Systems, Man, and Cybernetics Society.
 
 ## Compilation
 This project is purely written in Java with Maven. You need the following dependencies:
