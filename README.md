@@ -20,6 +20,10 @@ Example runs are included in the [ca.mcgill.sis.dmas.nlp.exp](https://github.com
 * [ICWSM2012 Authorship Characterization](https://github.com/McGill-DMaS/StyloMatrix/tree/master/src/main/java/ca/mcgill/sis/dmas/nlp/exp/icwsm2012)
 * [PAN2013 Authorship Characterization](https://github.com/McGill-DMaS/StyloMatrix/tree/master/src/main/java/ca/mcgill/sis/dmas/nlp/exp/pan2013ap)
 
+StyloMatrix was developed by Steven H. H. Ding under the supervision of Benjamin C. M. Fung of the [Data Mining and Security Lab](http://dmas.lab.mcgill.ca/) at McGill University in Canada. If you find StyloMatrix useful, please cite our paper:
+
+* S. H. H. Ding, B. C. M. Fung, F. Iqbal, and W. K. Cheung. Learning stylometric representations for authorship analysis. IEEE Transactions on Cybernetics (CYB), in press. IEEE Systems, Man, and Cybernetics Society.
+
 ## Compilation
 This project is purely written in Java with Maven. You need the following dependencies:
 * [Required] The latest x64 8.x/9.x JRE/JDK distribution from [Oracle](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
